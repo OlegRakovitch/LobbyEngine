@@ -1,0 +1,13 @@
+---
+Test
+---
+!|RattusEngine.Fixtures.GivenPlayers|
+|Username                           |
+|jim                                |
+
+!|script     |Common    |
+|given no rooms         |
+|with user jim logged in|
+
+!|Query:RattusEngine.Fixtures.GetRooms|
+|Name             |Action             |

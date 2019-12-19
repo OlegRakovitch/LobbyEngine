@@ -1,0 +1,8 @@
+|scenario|given no rooms|
+|clear rooms            |
+
+|scenario          |with user _ logged in|username|
+|set logged in user|@username                     |
+
+|scenario          |with room _ started a game|roomName|
+|start game in room|@roomName                          |

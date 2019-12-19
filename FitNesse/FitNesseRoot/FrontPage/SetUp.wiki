@@ -1,0 +1,2 @@
+!|script    |Common    |
+|Initialize application|

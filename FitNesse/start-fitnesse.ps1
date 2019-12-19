@@ -1,0 +1,1 @@
+java -jar $PSScriptRoot/fitnesse-standalone.jar -p 8080

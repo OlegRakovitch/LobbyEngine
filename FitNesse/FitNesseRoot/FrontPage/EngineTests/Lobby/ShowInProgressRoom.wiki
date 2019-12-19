@@ -1,0 +1,33 @@
+---
+Test
+---
+!|RattusEngine.Fixtures.GivenPlayers|
+|Username                           |
+|jim                                |
+|dwight                             |
+|mike                               |
+|pam                                |
+|oscar                              |
+
+!|RattusEngine.Fixtures.GivenRooms|
+|Name                             |
+|Room1                            |
+|Room2                            |
+|Room3                            |
+|Room4                            |
+
+!|RattusEngine.Fixtures.GivenPlayersInRooms|
+|Username             |RoomName            |
+|dwight               |Room1               |
+|jim                  |Room2               |
+|pam                  |Room2               |
+|mike                 |Room3               |
+|oscar                |Room4               |
+
+!|script        |Common        |
+|with user jim logged in       |
+|with room Room2 started a game|
+
+!|Query:RattusEngine.Fixtures.GetRooms|
+|Name              |Action            |
+|Room2             |Resume            |

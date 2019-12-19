@@ -1,0 +1,9 @@
+<suiteConfig>
+    <ApplicationUnderTest>
+        <AddAssembly>..\src\bin\Debug\netcoreapp2.2\src.dll</AddAssembly>
+        <AddNamespace>RattusEngine.Fixtures</AddNamespace>
+    </ApplicationUnderTest>
+    <Settings>
+       <Runner>fitSharp.Slim.Service.Runner</Runner>
+    </Settings>
+</suiteConfig>
