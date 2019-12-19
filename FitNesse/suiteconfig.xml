@@ -1,6 +1,6 @@
 <suiteConfig>
     <ApplicationUnderTest>
-        <AddAssembly>..\src\bin\Debug\netcoreapp2.2\src.dll</AddAssembly>
+        <AddAssembly>..\src\bin\Debug\netcoreapp2.2\RattusEngine.dll</AddAssembly>
         <AddNamespace>RattusEngine.Fixtures</AddNamespace>
     </ApplicationUnderTest>
     <Settings>
