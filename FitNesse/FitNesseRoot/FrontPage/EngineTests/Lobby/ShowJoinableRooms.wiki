@@ -8,27 +8,28 @@ Test
 |mike                               |
 |pam                                |
 |oscar                              |
+|toby                               |
+|angela                             |
 
-!|RattusEngine.Fixtures.GivenRooms|
-|Name                             |
-|Room1                            |
-|Room2                            |
-|Room3                            |
-|Room4                            |
+!|RattusEngine.Fixtures.GivenPlayersCreatedRooms|
+|Username               |Room name              |
+|dwight                 |Room1                  |
+|pam                    |Room2                  |
+|mike                   |Room3                  |
+|oscar                  |Room4                  |
 
-!|RattusEngine.Fixtures.GivenPlayersInRooms|
-|Username             |RoomName            |
-|dwight               |Room1               |
-|pam                  |Room2               |
-|mike                 |Room3               |
-|oscar                |Room4               |
+!|RattusEngine.Fixtures.GivenPlayersJoinedRooms|
+|Username              |Room name              |
+|toby                  |Room3                  |
+|angela                |Room4                  |
 
-!|script        |Common        |
-|with user jim logged in       |
-|with room Room1 started a game|
 
-!|Query:RattusEngine.Fixtures.GetRooms|
-|Name              |Action            |
-|Room2             |Join              |
-|Room3             |Join              |
-|Room4             |Join              |
+!|RattusEngine.Fixtures.GivenPlayersStartedGames|
+|Username                                       |
+|mike                                           |
+|oscar                                          |
+
+!|Query:RattusEngine.Fixtures.GetRooms|jim     |
+|Name                                 |Status  |
+|Room1                                |Joinable|
+|Room2                                |Joinable|

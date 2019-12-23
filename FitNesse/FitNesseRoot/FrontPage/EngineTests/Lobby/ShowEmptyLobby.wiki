@@ -5,9 +5,8 @@ Test
 |Username                           |
 |jim                                |
 
-!|script     |Common    |
-|given no rooms         |
-|with user jim logged in|
+!|script|Common|
+|given no rooms|
 
-!|Query:RattusEngine.Fixtures.GetRooms|
-|Name             |Action             |
+!|Query:RattusEngine.Fixtures.GetRooms|jim   |
+|Name                                 |Status|

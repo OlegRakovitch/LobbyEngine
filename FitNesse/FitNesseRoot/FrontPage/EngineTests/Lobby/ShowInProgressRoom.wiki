@@ -9,25 +9,21 @@ Test
 |pam                                |
 |oscar                              |
 
-!|RattusEngine.Fixtures.GivenRooms|
-|Name                             |
-|Room1                            |
-|Room2                            |
-|Room3                            |
-|Room4                            |
+!|RattusEngine.Fixtures.GivenPlayersCreatedRooms|
+|Username               |Room name              |
+|dwight                 |Room1                  |
+|jim                    |Room2                  |
+|mike                   |Room3                  |
+|oscar                  |Room4                  |
 
-!|RattusEngine.Fixtures.GivenPlayersInRooms|
-|Username             |RoomName            |
-|dwight               |Room1               |
-|jim                  |Room2               |
-|pam                  |Room2               |
-|mike                 |Room3               |
-|oscar                |Room4               |
+!|RattusEngine.Fixtures.GivenPlayersJoinedRooms|
+|Username              |Room name              |
+|pam                   |Room2                  |
 
-!|script        |Common        |
-|with user jim logged in       |
-|with room Room2 started a game|
+!|RattusEngine.Fixtures.GivenPlayersStartedGames|
+|Username                                       |
+|jim                                            |
 
-!|Query:RattusEngine.Fixtures.GetRooms|
-|Name              |Action            |
-|Room2             |Resume            |
+!|Query:RattusEngine.Fixtures.GetRooms|jim   |
+|Name                                 |Status|
+|Room2                                |InGame|

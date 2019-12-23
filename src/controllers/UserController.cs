@@ -9,9 +9,10 @@ namespace RattusEngine
             this.context = context;
         }
 
-        public bool CreateUser(string username)
+        public UserRegisterStatus Register(string username)
         {
-            return context.Storage.Save(new User() { Username = username });
+            context.Storage.Save(new User() { Username = username });
+            return UserRegisterStatus.OK;
         }
     }
 }

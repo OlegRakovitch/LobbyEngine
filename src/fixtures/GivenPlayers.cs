@@ -1,3 +1,5 @@
+using System;
+
 namespace RattusEngine.Fixtures
 {
     public class GivenPlayers
@@ -6,7 +8,11 @@ namespace RattusEngine.Fixtures
 
         public void Execute()
         {
-            Common.App.UserController.CreateUser(Username);
+            var status = Common.App.UserController.Register(Username);
+            if (status != UserRegisterStatus.OK)
+            {
+                throw new Exception($"User {Username} wasn't registered: {status}");
+            }
         }
     }
 }

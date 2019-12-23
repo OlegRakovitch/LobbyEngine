@@ -8,7 +8,7 @@ namespace RattusEngine
     public class MemoryStorage : IStorage
     {
         Dictionary<Type, Dictionary<string, object>> data = new Dictionary<Type, Dictionary<string, object>>();
-        public bool Save<T>(T entity) where T: Entity
+        public void Save<T>(T entity) where T: Entity
         {
             var type = typeof(T);
             if (!data.ContainsKey(type))
@@ -23,17 +23,27 @@ namespace RattusEngine
             {
                 data[type][entity.Id] = entity;
             }
-            return true;
         }
 
-        public bool DeleteAll<T>() where T: Entity
+        public void DeleteAll<T>() where T: Entity
         {
             var type = typeof(T);
             if (data.ContainsKey(type))
             {
                 data.Remove(type);
             }
-            return true;
+        }
+
+        public void Delete<T>(T entity) where T: Entity
+        {
+            var type = typeof(T);
+            if (data.ContainsKey(type))
+            {
+                if (data[type].ContainsKey(entity.Id))
+                {
+                    data[type].Remove(entity.Id);
+                }
+            }
         }
 
         public IQueryable<T> Get<T>() where T: Entity

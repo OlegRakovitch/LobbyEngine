@@ -12,46 +12,146 @@ namespace RattusEngine
             this.context = context;
         }
 
-        public bool CreateRoom(string roomName)
+        User GetUser()
         {
-            var storage = context.Storage;
-            return storage.Save(new Room() { Name = roomName });
+            var user = context.GetUser();
+            if (user == null)
+            {
+                throw new UserNotSpecifiedException();
+            }
+            return user;
         }
 
-        public bool JoinRoom(string roomName)
+        bool IsFullRoom(Room room)
         {
-            var storage = context.Storage;
-            var room = storage.Get<Room>().Single(r => r.Name == roomName);
-            room.Players.Add(context.GetUser());
-            return storage.Save(room);
+            return room.Players.Count == 4;
         }
 
-        public bool StartGame(string roomName)
+        public RoomCreateStatus CreateRoom(string roomName)
         {
+            var user = GetUser();
             var storage = context.Storage;
-            var room = storage.Get<Room>().Single(r => r.Name == roomName);
-            var game = new Game();
-            room.Game = game;
-            return storage.Save(game) && storage.Save(room);
+            if (storage.Get<Room>().Any(r => r.Name == roomName))
+            {
+                return RoomCreateStatus.DuplicateName;
+            }
+            else if (storage.Get<Room>().Any(r => r.Players.Contains(user)))
+            {
+                return RoomCreateStatus.AlreadyInRoom;
+            }
+            else
+            {
+                var room = new Room() { Name = roomName };
+                room.Players.Add(user);
+                room.Owner = user;
+                storage.Save(room);
+                return RoomCreateStatus.OK;
+            }
+        }
+
+        public RoomJoinStatus JoinRoom(string roomName)
+        {
+            var user = GetUser();
+            var storage = context.Storage;
+            var room = storage.Get<Room>().SingleOrDefault(r => r.Name == roomName);
+            if (room == null)
+            {
+                return RoomJoinStatus.RoomNotFound;
+            }
+            else if (IsFullRoom(room))
+            {
+                return RoomJoinStatus.RoomIsFull;
+            }
+            else if (storage.Get<Room>().Any(r => r.Players.Contains(user)))
+            {
+                return RoomJoinStatus.AlreadyInRoom;
+            }
+            else
+            {
+                room.Players.Add(user);
+                storage.Save(room);
+                return RoomJoinStatus.OK;
+            }
+        }
+
+        public RoomLeaveStatus LeaveRoom()
+        {
+            var user = GetUser();
+            var storage = context.Storage;
+            var room = storage.Get<Room>().SingleOrDefault(r => r.Players.Contains(user));
+            if (room == null)
+            {
+                return RoomLeaveStatus.NotInRoom;
+            }
+            else if (room.Game != null)
+            {
+                return RoomLeaveStatus.GameInProgress;
+            }
+            else
+            {
+                if (room.Owner.Equals(user))
+                {
+                    room.Players.Clear();
+                    storage.Delete(room);
+                }
+                else
+                {
+                    room.Players.Remove(user);
+                }
+                return RoomLeaveStatus.OK;
+            }
+        }
+
+        public GameStartStatus StartGame()
+        {
+            var user = GetUser();
+            var storage = context.Storage;
+            var room = storage.Get<Room>().SingleOrDefault(r => r.Players.Contains(user));
+            if (room == null)
+            {
+                return GameStartStatus.NotInRoom;
+            }
+            else if (room.Game != null)
+            {
+                return GameStartStatus.GameInProgress;
+            }
+            else if (!user.Equals(room.Owner))
+            {
+                return GameStartStatus.NotAnOwner;
+            }
+            else if (room.Players.Count < 2)
+            {
+                return GameStartStatus.NotEnoughPlayers;
+            }
+            else
+            {
+                var game = new Game();
+                storage.Save(game);
+                room.Game = game;
+                storage.Save(room);
+                return GameStartStatus.OK;
+            }
         }
 
         public RoomView[] GetRooms()
         {
-            var joinedRoom = context.Storage.Get<Room>().SingleOrDefault(r => r.Players.Contains(context.GetUser()));
-            bool insideRoom = joinedRoom != null;
-            IEnumerable<Room> joinableRooms;
-            if (insideRoom)
+            var user = GetUser();
+            var joinedRoom = context.Storage.Get<Room>().SingleOrDefault(r => r.Players.Contains(user));
+            if (joinedRoom != null)
             {
-                joinableRooms = new Room[] { joinedRoom };
+                return new RoomView[] { new RoomView {
+                    Name = joinedRoom.Name,
+                    Status = joinedRoom.Game == null ? RoomViewStatus.InRoom : RoomViewStatus.InGame
+                }};
             }
             else
             {
-                joinableRooms = context.Storage.Get<Room>().Where(r => r.Game == null);
+                var joinableRooms = context.Storage.Get<Room>().Where(r => r.Game == null);
+                return joinableRooms.Select(r => new RoomView {
+                    Name = r.Name,
+                    Status = IsFullRoom(r) ? RoomViewStatus.Full : RoomViewStatus.Joinable
+                }).ToArray();
             }
-            return joinableRooms.Select(r => new RoomView() {
-                Name = r.Name,
-                Action = !insideRoom ? "Join" : joinedRoom.Game == null ? "Leave" : "Resume"
-            }).ToArray();
         }
     }
 }

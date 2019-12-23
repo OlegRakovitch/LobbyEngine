@@ -26,20 +26,6 @@ namespace RattusEngine.Fixtures
                 return false;
             }
         }
-        public bool SetLoggedInUser(string username)
-        {
-            try
-            {
-                Context.CurrentUser = App.Context.Storage.Get<User>().Where(user => user.Username == username).Single();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception while settings logged in user: ${ex.Message}");
-                return false;
-            }
-            
-        }
 
         public bool ClearRooms()
         {
@@ -51,19 +37,6 @@ namespace RattusEngine.Fixtures
             catch (Exception ex)
             {
                 Console.WriteLine($"Error while deleting all rooms: ${ex.Message}");
-                return false;
-            }
-        }
-
-        public bool StartGameInRoom(string roomName)
-        {
-            try
-            {
-                return App.RoomController.StartGame(roomName);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error while starting game in room {roomName}: ${ex.Message}");
                 return false;
             }
         }

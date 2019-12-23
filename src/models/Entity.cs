@@ -2,7 +2,7 @@ using System;
 
 namespace RattusEngine
 {
-    public class Entity
+    public abstract class Entity
     {
         public string Id;
 
@@ -14,7 +14,7 @@ namespace RattusEngine
         public override bool Equals(object obj)
         {
             var other = obj as Entity;
-            return other != null && other.Id == Id;
+            return other != null && other.GetHashCode() == GetHashCode();
         }
 
         public override int GetHashCode()

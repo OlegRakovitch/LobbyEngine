@@ -9,6 +9,8 @@ namespace RattusEngine
 
         public ICollection<User> Players = new List<User>();
 
+        public User Owner;
+
         public Game Game;
     }
 }
