@@ -1,4 +1,7 @@
-namespace RattusEngine
+using RattusEngine.Controllers.Statuses;
+using RattusEngine.Models;
+
+namespace RattusEngine.Controllers
 {
     public class UserController
     {

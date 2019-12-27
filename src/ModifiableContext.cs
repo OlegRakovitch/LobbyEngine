@@ -1,3 +1,5 @@
+using RattusEngine.Models;
+
 namespace RattusEngine
 {
     public class ModifiableContext : IContext

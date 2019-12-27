@@ -1,4 +1,5 @@
 using System.Linq;
+using RattusEngine.Models;
 
 namespace RattusEngine
 {

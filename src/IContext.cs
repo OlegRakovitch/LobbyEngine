@@ -1,4 +1,4 @@
-using System;
+using RattusEngine.Models;
 
 namespace RattusEngine
 {

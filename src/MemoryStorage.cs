@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
+using RattusEngine.Models;
 
 namespace RattusEngine
 {

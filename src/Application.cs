@@ -1,12 +1,12 @@
-using System;
+using RattusEngine.Controllers;
 
 namespace RattusEngine
 {
-    public class Application
+    public class Application : IApplication
     {
-        public readonly IContext Context;
-        public readonly RoomController RoomController;
-        public readonly UserController UserController;
+        public IContext Context { get; private set; }
+        public RoomController RoomController { get; private set; }
+        public UserController UserController { get; private set; }
         public Application(IContext context)
         {
             Context = context;

@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using RattusEngine.Controllers.Statuses;
+using RattusEngine.Models;
 
 namespace RattusEngine.Fixtures
 {

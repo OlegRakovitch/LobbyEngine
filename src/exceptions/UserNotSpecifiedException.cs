@@ -1,6 +1,6 @@
 using System;
 
-namespace RattusEngine
+namespace RattusEngine.Exceptions
 {
     public class UserNotSpecifiedException: Exception
     {

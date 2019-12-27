@@ -1,7 +1,10 @@
-using System.Collections.Generic;
 using System.Linq;
+using RattusEngine.Controllers.Statuses;
+using RattusEngine.Exceptions;
+using RattusEngine.Models;
+using RattusEngine.Views;
 
-namespace RattusEngine
+namespace RattusEngine.Controllers
 {
     public class RoomController
     {

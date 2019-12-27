@@ -1,4 +1,5 @@
 using System;
+using RattusEngine.Controllers.Statuses;
 
 namespace RattusEngine.Fixtures
 {

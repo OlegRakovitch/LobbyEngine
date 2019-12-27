@@ -1,6 +1,10 @@
 using Xunit;
 using RattusEngine;
 using System.Linq;
+using RattusEngine.Controllers.Statuses;
+using RattusEngine.Controllers;
+using RattusEngine.Exceptions;
+using RattusEngine.Models;
 
 namespace RattusEngine.Tests
 {

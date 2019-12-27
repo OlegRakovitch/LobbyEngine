@@ -1,6 +1,6 @@
 using System;
 
-namespace RattusEngine
+namespace RattusEngine.Models
 {
     public abstract class Entity
     {

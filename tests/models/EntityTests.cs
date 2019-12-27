@@ -1,6 +1,7 @@
 using System;
 using Xunit;
 using RattusEngine;
+using RattusEngine.Models;
 
 namespace RattusEngine.Tests
 {

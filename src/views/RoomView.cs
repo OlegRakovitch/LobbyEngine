@@ -1,4 +1,6 @@
-namespace RattusEngine
+using RattusEngine.Controllers.Statuses;
+
+namespace RattusEngine.Views
 {
     public class RoomView
     {

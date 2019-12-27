@@ -1,4 +1,6 @@
 using System.Linq;
+using RattusEngine.Models;
+using RattusEngine.Views;
 
 namespace RattusEngine.Fixtures
 {

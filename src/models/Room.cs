@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace RattusEngine
+namespace RattusEngine.Models
 {
     public class Room : Entity
     {
