@@ -144,7 +144,8 @@ namespace RattusEngine.Controllers
             {
                 return new RoomView[] { new RoomView {
                     Name = joinedRoom.Name,
-                    Status = joinedRoom.Game == null ? RoomViewStatus.InRoom : RoomViewStatus.InGame
+                    Status = joinedRoom.Game == null ? RoomViewStatus.InRoom : RoomViewStatus.InGame,
+                    Players = joinedRoom.Players
                 }};
             }
             else
@@ -152,7 +153,8 @@ namespace RattusEngine.Controllers
                 var joinableRooms = context.Storage.Get<Room>().Where(r => r.Game == null);
                 return joinableRooms.Select(r => new RoomView {
                     Name = r.Name,
-                    Status = IsFullRoom(r) ? RoomViewStatus.Full : RoomViewStatus.Joinable
+                    Status = IsFullRoom(r) ? RoomViewStatus.Full : RoomViewStatus.Joinable,
+                    Players = r.Players
                 }).ToArray();
             }
         }

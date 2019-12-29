@@ -381,12 +381,14 @@ namespace RattusEngine.Tests
             Assert.Single(ownerRooms);
             var ownerRoom = ownerRooms.Single();
             Assert.Equal(RoomViewStatus.InGame, ownerRoom.Status);
+            Assert.Equal(new User[] { owner, user }, ownerRoom.Players);
 
             context.CurrentUser = user;
             var userRooms = roomController.GetRooms();
             Assert.Single(userRooms);
             var userRoom = userRooms.Single();
             Assert.Equal(RoomViewStatus.InGame, userRoom.Status);
+            Assert.Equal(new User[] { owner, user }, userRoom.Players);
         }
 
         [Fact]
@@ -406,6 +408,7 @@ namespace RattusEngine.Tests
             Assert.Single(ownerRooms);
             var ownerRoom = ownerRooms.Single();
             Assert.Equal(RoomViewStatus.InRoom, ownerRoom.Status);
+            Assert.Equal(new User[] { owner }, ownerRoom.Players);
 
             context.CurrentUser = user;
             Assert.Equal(RoomJoinStatus.OK, roomController.JoinRoom("room"));
@@ -413,6 +416,7 @@ namespace RattusEngine.Tests
             Assert.Single(userRooms);
             var userRoom = userRooms.Single();
             Assert.Equal(RoomViewStatus.InRoom, userRoom.Status);
+            Assert.Equal(new User[] { owner, user }, userRoom.Players);
         }
 
         [Fact]
@@ -434,6 +438,7 @@ namespace RattusEngine.Tests
             Assert.Single(userRooms);
             var userRoom = userRooms.Single();
             Assert.Equal(RoomViewStatus.Joinable, userRoom.Status);
+            Assert.Equal(new User[] { owner }, userRoom.Players);
         }
     }
 }
