@@ -9,5 +9,6 @@ namespace RattusEngine.Views
         public string Name;
         public RoomViewStatus Status;
         public IEnumerable<User> Players;
+        public User Owner;
     }
 }

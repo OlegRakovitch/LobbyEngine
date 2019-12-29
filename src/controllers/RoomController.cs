@@ -145,7 +145,8 @@ namespace RattusEngine.Controllers
                 return new RoomView[] { new RoomView {
                     Name = joinedRoom.Name,
                     Status = joinedRoom.Game == null ? RoomViewStatus.InRoom : RoomViewStatus.InGame,
-                    Players = joinedRoom.Players
+                    Players = joinedRoom.Players,
+                    Owner = joinedRoom.Owner
                 }};
             }
             else
@@ -154,7 +155,8 @@ namespace RattusEngine.Controllers
                 return joinableRooms.Select(r => new RoomView {
                     Name = r.Name,
                     Status = IsFullRoom(r) ? RoomViewStatus.Full : RoomViewStatus.Joinable,
-                    Players = r.Players
+                    Players = r.Players,
+                    Owner = r.Owner
                 }).ToArray();
             }
         }
