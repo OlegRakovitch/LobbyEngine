@@ -97,16 +97,16 @@ namespace RattusEngine.Tests
                 CurrentUser = user1
             };
             var roomController = new RoomController(context);
-            Assert.Equal(RoomCreateStatus.OK, roomController.CreateRoom("room"));
+            roomController.CreateRoom("room");
 
             context.CurrentUser = user2;
-            Assert.Equal(RoomJoinStatus.OK, roomController.JoinRoom("room"));
+            roomController.JoinRoom("room");
 
             context.CurrentUser = user3;
-            Assert.Equal(RoomJoinStatus.OK, roomController.JoinRoom("room"));
+            roomController.JoinRoom("room");
 
             context.CurrentUser = user4;
-            Assert.Equal(RoomJoinStatus.OK, roomController.JoinRoom("room"));
+            roomController.JoinRoom("room");
 
             context.CurrentUser = user5;
             Assert.Equal(RoomJoinStatus.RoomIsFull, roomController.JoinRoom("room"));
@@ -118,12 +118,21 @@ namespace RattusEngine.Tests
         {
             var context = GetContextWithProvidedUser();
             var roomController = new RoomController(context);
-            Assert.Equal(RoomCreateStatus.OK, roomController.CreateRoom("room"));
-            Assert.True(context.Storage.Get<Room>().Single().Players.Contains(context.GetUser()));
-            var room = context.Storage.Get<Room>().Single(r => r.Name == "room");
+            roomController.CreateRoom("room");
+            var room = context.Storage.Get<Room>().Single();
             var user = context.GetUser();
             Assert.Equal(new User[] { user }, room.Players);
             Assert.Equal(user, room.Owner);
+        }
+
+        [Fact]
+        public void CreatedRoomHasSpecifiedName()
+        {
+            var context = GetContextWithProvidedUser();
+            var roomController = new RoomController(context);
+            roomController.CreateRoom("room-with-some-name");
+            var room = context.Storage.Get<Room>().Single();
+            Assert.Equal("room-with-some-name", room.Name);
         }
 
         [Fact]
@@ -138,13 +147,11 @@ namespace RattusEngine.Tests
                 CurrentUser = user1
             };
             var roomController = new RoomController(context);
-            Assert.Equal(RoomCreateStatus.OK, roomController.CreateRoom("room"));
+            roomController.CreateRoom("room");
 
             context.CurrentUser = user2;
             Assert.Equal(RoomCreateStatus.DuplicateName, roomController.CreateRoom("room"));
-            Assert.Equal(1, context.Storage.Get<Room>().Count());
-            var room = storage.Get<Room>().Single();
-            Assert.Equal(new User[] { user1 }, room.Players);
+            Assert.Single(context.Storage.Get<Room>());
         }
 
         [Fact]
@@ -152,12 +159,12 @@ namespace RattusEngine.Tests
         {
             var context = GetContextWithProvidedUser();
             var roomController = new RoomController(context);
-            Assert.Equal(RoomCreateStatus.OK, roomController.CreateRoom("room"));
+            roomController.CreateRoom("room");
             Assert.Equal(RoomCreateStatus.AlreadyInRoom, roomController.CreateRoom("room2"));
-            Assert.Equal(1, context.Storage.Get<Room>().Count());
-            var room = context.Storage.Get<Room>().Single();
+            var rooms = context.Storage.Get<Room>();
+            Assert.Single(rooms);
+            var room = rooms.Single();
             Assert.Equal("room", room.Name);
-            Assert.Equal(new User[] { context.GetUser() }, room.Players);
         }
 
         [Fact]
@@ -165,10 +172,8 @@ namespace RattusEngine.Tests
         {
             var context = GetContextWithProvidedUser();
             var roomController = new RoomController(context);
-            Assert.Equal(RoomCreateStatus.OK, roomController.CreateRoom("room"));
+            roomController.CreateRoom("room");
             Assert.Equal(RoomJoinStatus.AlreadyInRoom, roomController.JoinRoom("room"));
-            var room = context.Storage.Get<Room>().Single();
-            Assert.Equal(new User[] { context.GetUser() }, room.Players);
         }
 
         [Fact]
@@ -183,10 +188,10 @@ namespace RattusEngine.Tests
                 CurrentUser = owner
             };
             var roomController = new RoomController(context);
-            Assert.Equal(RoomCreateStatus.OK, roomController.CreateRoom("room"));
+            roomController.CreateRoom("room");
 
             context.CurrentUser = user;
-            Assert.Equal(RoomCreateStatus.OK, roomController.CreateRoom("room2"));
+            roomController.CreateRoom("room2");
             Assert.Equal(RoomJoinStatus.AlreadyInRoom, roomController.JoinRoom("room"));
             var room = context.Storage.Get<Room>().Single(r => r.Name == "room");
             Assert.Equal(new User[] { owner }, room.Players);
@@ -206,14 +211,12 @@ namespace RattusEngine.Tests
                 CurrentUser = owner
             };
             var roomController = new RoomController(context);
-            Assert.Equal(RoomCreateStatus.OK, roomController.CreateRoom("room"));
-            var room = context.Storage.Get<Room>().Single(r => r.Name == "room");
-            Assert.Equal(new User[] { context.GetUser() }, room.Players);
+            roomController.CreateRoom("room");
 
             context.CurrentUser = user;
-            Assert.Equal(RoomJoinStatus.OK, roomController.JoinRoom("room"));
+            roomController.JoinRoom("room");
             Assert.Equal(RoomLeaveStatus.OK, roomController.LeaveRoom());
-            room = context.Storage.Get<Room>().Single(r => r.Name == "room");
+            var room = context.Storage.Get<Room>().Single();
             Assert.Equal(new User[] { owner }, room.Players);
         }
 
@@ -237,13 +240,13 @@ namespace RattusEngine.Tests
                 CurrentUser = owner
             };
             var roomController = new RoomController(context);
-            Assert.Equal(RoomCreateStatus.OK, roomController.CreateRoom("room"));
+            roomController.CreateRoom("room");
 
             context.CurrentUser = user;
-            Assert.Equal(RoomJoinStatus.OK, roomController.JoinRoom("room"));
+            roomController.JoinRoom("room");
 
             context.CurrentUser = owner;
-            Assert.Equal(GameStartStatus.OK, roomController.StartGame());
+            roomController.StartGame();
             Assert.Equal(RoomLeaveStatus.GameInProgress, roomController.LeaveRoom());
             var room = storage.Get<Room>().Single();
             Assert.Equal(new User[] { owner, user }, room.Players);
@@ -261,16 +264,62 @@ namespace RattusEngine.Tests
                 CurrentUser = owner
             };
             var roomController = new RoomController(context);
-            Assert.Equal(RoomCreateStatus.OK, roomController.CreateRoom("room"));
+            roomController.CreateRoom("room");
 
             context.CurrentUser = user;
-            Assert.Equal(RoomJoinStatus.OK, roomController.JoinRoom("room"));
+            roomController.JoinRoom("room");
 
             context.CurrentUser = owner;
             Assert.Equal(GameStartStatus.OK, roomController.StartGame());
+        }
+
+        [Fact]
+        public void GameIdIsSavedInRoomUponGameStart()
+        {
+            var owner = new User();
+            var user = new User();
+            var storage = new MemoryStorage();
+            var context = new ModifiableContext()
+            {
+                Storage = storage,
+                CurrentUser = owner
+            };
+            var roomController = new RoomController(context);
+            roomController.CreateRoom("room");
+
+            context.CurrentUser = user;
+            roomController.JoinRoom("room");
+
+            context.CurrentUser = owner;
+            roomController.StartGame();
+
             var room = storage.Get<Room>().Single();
-            Assert.Equal(new User[] { owner, user }, room.Players);
-            Assert.NotNull(room.Game);
+            var game = storage.Get<Game>().Single();
+            Assert.Equal(game.Id, room.GameId);
+        }
+
+        [Fact]
+        public void GamePlayersAreAssignedUponGameStart()
+        {
+            var owner = new User();
+            var user = new User();
+            var storage = new MemoryStorage();
+            var context = new ModifiableContext()
+            {
+                Storage = storage,
+                CurrentUser = owner
+            };
+            var roomController = new RoomController(context);
+            roomController.CreateRoom("room");
+
+            context.CurrentUser = user;
+            roomController.JoinRoom("room");
+
+            context.CurrentUser = owner;
+            roomController.StartGame();
+
+            var game = storage.Get<Game>().Single();
+            Assert.Equal(new User[] { owner, user }, game.Players);
         }
 
         [Fact]
@@ -285,14 +334,12 @@ namespace RattusEngine.Tests
                 CurrentUser = owner
             };
             var roomController = new RoomController(context);
-            Assert.Equal(RoomCreateStatus.OK, roomController.CreateRoom("room"));
+            roomController.CreateRoom("room");
 
             context.CurrentUser = user;
-            Assert.Equal(RoomJoinStatus.OK, roomController.JoinRoom("room"));
+            roomController.JoinRoom("room");
             Assert.Equal(GameStartStatus.NotAnOwner, roomController.StartGame());
-            var room = storage.Get<Room>().Single();
-            Assert.Equal(new User[] { owner, user }, room.Players);
-            Assert.Null(room.Game);
+            Assert.Null(storage.Get<Room>().Single().GameId);
         }
 
         [Fact]
@@ -308,10 +355,9 @@ namespace RattusEngine.Tests
         {
             var context = GetContextWithProvidedUser();
             var roomController = new RoomController(context);
-            Assert.Equal(RoomCreateStatus.OK, roomController.CreateRoom("room"));
+            roomController.CreateRoom("room");
             Assert.Equal(GameStartStatus.NotEnoughPlayers, roomController.StartGame());
-            var room = context.Storage.Get<Room>().Single();
-            Assert.Null(room.Game);
+            Assert.Null(context.Storage.Get<Room>().Single().GameId);
         }
 
         [Fact]
@@ -326,17 +372,18 @@ namespace RattusEngine.Tests
                 CurrentUser = owner
             };
             var roomController = new RoomController(context);
-            Assert.Equal(RoomCreateStatus.OK, roomController.CreateRoom("room"));
+            roomController.CreateRoom("room");
 
             context.CurrentUser = user;
-            Assert.Equal(RoomJoinStatus.OK, roomController.JoinRoom("room"));
+            roomController.JoinRoom("room");
 
             context.CurrentUser = owner;
-            Assert.Equal(GameStartStatus.OK, roomController.StartGame());
+            roomController.StartGame();
             var room = context.Storage.Get<Room>().Single();
-            var game = room.Game;
+            var gameId = room.GameId;
             Assert.Equal(GameStartStatus.GameInProgress, roomController.StartGame());
-            Assert.Equal(game, room.Game);
+            room = context.Storage.Get<Room>().Single();
+            Assert.Equal(gameId, room.GameId);
         }
 
         [Fact]
@@ -344,9 +391,8 @@ namespace RattusEngine.Tests
         {
             var context = GetContextWithProvidedUser();
             var roomController = new RoomController(context);
-            Assert.Equal(RoomCreateStatus.OK, roomController.CreateRoom("room"));
-            Assert.Single(context.Storage.Get<Room>());
-            Assert.Equal(RoomLeaveStatus.OK, roomController.LeaveRoom());
+            roomController.CreateRoom("room");
+            roomController.LeaveRoom();
             Assert.Empty(context.Storage.Get<Room>());
         }
 
@@ -370,27 +416,19 @@ namespace RattusEngine.Tests
                 CurrentUser = owner
             };
             var roomController = new RoomController(context);
-            Assert.Equal(RoomCreateStatus.OK, roomController.CreateRoom("room"));
+            roomController.CreateRoom("room");
 
             context.CurrentUser = user;
-            Assert.Equal(RoomJoinStatus.OK, roomController.JoinRoom("room"));
+            roomController.JoinRoom("room");
 
             context.CurrentUser = owner;
-            Assert.Equal(GameStartStatus.OK, roomController.StartGame());
-            var ownerRooms = roomController.GetRooms();
-            Assert.Single(ownerRooms);
-            var ownerRoom = ownerRooms.Single();
+            roomController.StartGame();
+            var ownerRoom = roomController.GetRooms().Single();
             Assert.Equal(RoomViewStatus.InGame, ownerRoom.Status);
-            Assert.Equal(new User[] { owner, user }, ownerRoom.Players);
-            Assert.Equal(owner, ownerRoom.Owner);
 
             context.CurrentUser = user;
-            var userRooms = roomController.GetRooms();
-            Assert.Single(userRooms);
-            var userRoom = userRooms.Single();
+            var userRoom = roomController.GetRooms().Single();
             Assert.Equal(RoomViewStatus.InGame, userRoom.Status);
-            Assert.Equal(new User[] { owner, user }, userRoom.Players);
-            Assert.Equal(owner, userRoom.Owner);
         }
 
         [Fact]
@@ -405,22 +443,14 @@ namespace RattusEngine.Tests
                 CurrentUser = owner
             };
             var roomController = new RoomController(context);
-            Assert.Equal(RoomCreateStatus.OK, roomController.CreateRoom("room"));
-            var ownerRooms = roomController.GetRooms();
-            Assert.Single(ownerRooms);
-            var ownerRoom = ownerRooms.Single();
+            roomController.CreateRoom("room");
+            var ownerRoom = roomController.GetRooms().Single();
             Assert.Equal(RoomViewStatus.InRoom, ownerRoom.Status);
-            Assert.Equal(new User[] { owner }, ownerRoom.Players);
-            Assert.Equal(owner, ownerRoom.Owner);
 
             context.CurrentUser = user;
-            Assert.Equal(RoomJoinStatus.OK, roomController.JoinRoom("room"));
-            var userRooms = roomController.GetRooms();
-            Assert.Single(userRooms);
-            var userRoom = userRooms.Single();
+            roomController.JoinRoom("room");
+            var userRoom = roomController.GetRooms().Single();
             Assert.Equal(RoomViewStatus.InRoom, userRoom.Status);
-            Assert.Equal(new User[] { owner, user }, userRoom.Players);
-            Assert.Equal(owner, userRoom.Owner);
         }
 
         [Fact]
@@ -435,15 +465,11 @@ namespace RattusEngine.Tests
                 CurrentUser = owner
             };
             var roomController = new RoomController(context);
-            Assert.Equal(RoomCreateStatus.OK, roomController.CreateRoom("room"));
+            roomController.CreateRoom("room");
 
             context.CurrentUser = user;
-            var userRooms = roomController.GetRooms();
-            Assert.Single(userRooms);
-            var userRoom = userRooms.Single();
+            var userRoom = roomController.GetRooms().Single();
             Assert.Equal(RoomViewStatus.Joinable, userRoom.Status);
-            Assert.Equal(new User[] { owner }, userRoom.Players);
-            Assert.Equal(owner, userRoom.Owner);
         }
     }
 }

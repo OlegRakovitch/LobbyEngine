@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using RattusEngine.Controllers.Statuses;
 using RattusEngine.Exceptions;
@@ -86,7 +87,7 @@ namespace RattusEngine.Controllers
             {
                 return RoomLeaveStatus.NotInRoom;
             }
-            else if (room.Game != null)
+            else if (!string.IsNullOrEmpty(room.GameId))
             {
                 return RoomLeaveStatus.GameInProgress;
             }
@@ -114,7 +115,7 @@ namespace RattusEngine.Controllers
             {
                 return GameStartStatus.NotInRoom;
             }
-            else if (room.Game != null)
+            else if (!string.IsNullOrEmpty(room.GameId))
             {
                 return GameStartStatus.GameInProgress;
             }
@@ -129,8 +130,9 @@ namespace RattusEngine.Controllers
             else
             {
                 var game = new Game();
+                game.Players = room.Players;
                 storage.Save(game);
-                room.Game = game;
+                room.GameId = game.Id;
                 storage.Save(room);
                 return GameStartStatus.OK;
             }
@@ -144,14 +146,14 @@ namespace RattusEngine.Controllers
             {
                 return new RoomView[] { new RoomView {
                     Name = joinedRoom.Name,
-                    Status = joinedRoom.Game == null ? RoomViewStatus.InRoom : RoomViewStatus.InGame,
+                    Status = string.IsNullOrEmpty(joinedRoom.GameId) ? RoomViewStatus.InRoom : RoomViewStatus.InGame,
                     Players = joinedRoom.Players,
                     Owner = joinedRoom.Owner
                 }};
             }
             else
             {
-                var joinableRooms = context.Storage.Get<Room>().Where(r => r.Game == null);
+                var joinableRooms = context.Storage.Get<Room>().Where(r => string.IsNullOrEmpty(r.GameId));
                 return joinableRooms.Select(r => new RoomView {
                     Name = r.Name,
                     Status = IsFullRoom(r) ? RoomViewStatus.Full : RoomViewStatus.Joinable,

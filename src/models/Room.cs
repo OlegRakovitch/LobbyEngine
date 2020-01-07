@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace RattusEngine.Models
 {
@@ -10,6 +11,6 @@ namespace RattusEngine.Models
 
         public User Owner;
 
-        public Game Game;
+        public string GameId;
     }
 }
