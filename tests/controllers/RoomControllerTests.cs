@@ -67,7 +67,7 @@ namespace RattusEngine.Tests
                 CurrentUser = owner
             };
             var roomController = new RoomController(context);
-            Assert.Equal(RoomCreateStatus.OK, roomController.CreateRoom("room"));
+            roomController.CreateRoom("room");
 
             context.CurrentUser = user;
             Assert.Equal(RoomJoinStatus.OK, roomController.JoinRoom("room"));
@@ -111,6 +111,16 @@ namespace RattusEngine.Tests
             context.CurrentUser = user5;
             Assert.Equal(RoomJoinStatus.RoomIsFull, roomController.JoinRoom("room"));
             Assert.Equal(4, storage.Get<Room>().Single().Players.Count);
+        }
+
+        [Fact]
+        public void UserCanCreateRoomIfUserIsNotInRoom()
+        {
+            var context = GetContextWithProvidedUser();
+            var roomController = new RoomController(context);
+            Assert.Equal(RoomCreateStatus.OK, roomController.CreateRoom("room"));
+            var room = context.Storage.Get<Room>().Single();
+            Assert.Equal("room", room.Name);
         }
 
         [Fact]
