@@ -1,13 +1,17 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 using RattusEngine.Models;
 
 namespace RattusEngine
 {
     public interface IStorage
     {
-        void Save<T>(T entity) where T: Entity;
-        void DeleteAll<T>() where T: Entity;
-        void Delete<T>(T entity) where T: Entity;
-        IQueryable<T> Get<T>() where T: Entity;
+        Task Save<T>(T entity) where T: Entity;
+        Task DeleteAll<T>() where T: Entity;
+        Task Delete<T>(T entity) where T: Entity;
+        Task<IEnumerable<T>> Get<T>(Expression<Func<T, bool>> filter = null) where T: Entity;
     }
 }

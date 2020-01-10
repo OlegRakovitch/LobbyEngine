@@ -12,8 +12,8 @@ namespace RattusEngine.Fixtures
 
         public void Execute()
         {
-            Common.Context.CurrentUser = Common.App.Context.Storage.Get<User>().Single(u => u.Username == Username);
-            var status = Common.App.RoomController.JoinRoom(RoomName);
+            Common.Context.CurrentUser = Common.App.Context.Storage.Get<User>(u => u.Username == Username).GetAwaiter().GetResult().Single();
+            var status = Common.App.RoomController.JoinRoom(RoomName).GetAwaiter().GetResult();
             if (status != RoomJoinStatus.OK)
             {
                 throw new Exception($"Room {RoomName} wasn't joined successfully by {Username}: {status}");

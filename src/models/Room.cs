@@ -12,5 +12,7 @@ namespace RattusEngine.Models
         public User Owner;
 
         public string GameId;
+
+        public string GameType;
     }
 }

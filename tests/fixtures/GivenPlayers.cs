@@ -9,7 +9,7 @@ namespace RattusEngine.Fixtures
 
         public void Execute()
         {
-            var status = Common.App.UserController.Register(Username);
+            var status = Common.App.UserController.Register(Username).GetAwaiter().GetResult();
             if (status != UserRegisterStatus.OK)
             {
                 throw new Exception($"User {Username} wasn't registered: {status}");

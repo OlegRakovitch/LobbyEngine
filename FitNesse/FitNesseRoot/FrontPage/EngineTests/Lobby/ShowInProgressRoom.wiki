@@ -10,11 +10,11 @@ Test
 |oscar                              |
 
 !|RattusEngine.Fixtures.GivenPlayersCreatedRooms|
-|Username               |Room name              |
-|dwight                 |Room1                  |
-|jim                    |Room2                  |
-|mike                   |Room3                  |
-|oscar                  |Room4                  |
+|Username       |Room name      |Game type      |
+|dwight         |Room1          |Game1          |
+|jim            |Room2          |Game2          |
+|mike           |Room3          |Game3          |
+|oscar          |Room4          |Game4          |
 
 !|RattusEngine.Fixtures.GivenPlayersJoinedRooms|
 |Username              |Room name              |
@@ -24,6 +24,6 @@ Test
 |Username                                       |
 |jim                                            |
 
-!|Query:RattusEngine.Fixtures.GetRooms|jim   |
-|Name                                 |Status|
-|Room2                                |InGame|
+!|Query:RattusEngine.Fixtures.GetRooms|jim            |
+|Name                                 |GameType|Status|
+|Room2                                |Game2   |InGame|

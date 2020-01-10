@@ -1,11 +1,12 @@
 using System;
 using RattusEngine.Models;
+using RattusEngine.Tests;
 
 namespace RattusEngine.Fixtures
 {
     public class Common
     {
-        public static Application App;
+        public static LobbyController App;
         public static MemoryStorage Storage;
         public static ModifiableContext Context;
         public bool InitializeApplication()
@@ -17,7 +18,7 @@ namespace RattusEngine.Fixtures
                 {
                     Storage = Storage
                 };
-                App = new Application(Context);
+                App = new LobbyController(Context, new GameStarter());
                 return true;
             }
             catch (Exception ex)

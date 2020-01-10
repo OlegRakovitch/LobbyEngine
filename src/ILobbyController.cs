@@ -2,7 +2,7 @@ using RattusEngine.Controllers;
 
 namespace RattusEngine
 {
-    public interface IApplication
+    public interface ILobbyController
     {
         IContext Context { get; }
         RoomController RoomController { get; }

@@ -8,5 +8,5 @@ Test
 !|script|Common|
 |given no rooms|
 
-!|Query:RattusEngine.Fixtures.GetRooms|jim   |
-|Name                                 |Status|
+!|Query:RattusEngine.Fixtures.GetRooms|jim            |
+|Name                                 |GameType|Status|

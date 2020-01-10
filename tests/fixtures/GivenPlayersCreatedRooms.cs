@@ -9,11 +9,12 @@ namespace RattusEngine.Fixtures
     {
         public string Username;
         public string RoomName;
+        public string GameType;
 
         public void Execute()
         {
-            Common.Context.CurrentUser = Common.App.Context.Storage.Get<User>().Single(u => u.Username == Username);
-            var status = Common.App.RoomController.CreateRoom(RoomName);
+            Common.Context.CurrentUser = Common.App.Context.Storage.Get<User>(u => u.Username == Username).GetAwaiter().GetResult().Single();
+            var status = Common.App.RoomController.CreateRoom(RoomName, GameType).GetAwaiter().GetResult();
             if (RoomCreateStatus.OK != status)
             {
                 throw new Exception($"Room {RoomName} wasn't created successfully by {Username}: {status}");

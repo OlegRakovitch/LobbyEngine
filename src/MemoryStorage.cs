@@ -3,13 +3,15 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 using RattusEngine.Models;
+using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace RattusEngine
 {
     public class MemoryStorage : IStorage
     {
         Dictionary<Type, Dictionary<string, object>> data = new Dictionary<Type, Dictionary<string, object>>();
-        public void Save<T>(T entity) where T: Entity
+        public Task Save<T>(T entity) where T: Entity
         {
             var type = typeof(T);
             if (!data.ContainsKey(type))
@@ -24,18 +26,20 @@ namespace RattusEngine
             {
                 data[type][entity.Id] = entity;
             }
+            return Task.CompletedTask;
         }
 
-        public void DeleteAll<T>() where T: Entity
+        public Task DeleteAll<T>() where T: Entity
         {
             var type = typeof(T);
             if (data.ContainsKey(type))
             {
                 data.Remove(type);
             }
+            return Task.CompletedTask;
         }
 
-        public void Delete<T>(T entity) where T: Entity
+        public Task Delete<T>(T entity) where T: Entity
         {
             var type = typeof(T);
             if (data.ContainsKey(type))
@@ -45,18 +49,23 @@ namespace RattusEngine
                     data[type].Remove(entity.Id);
                 }
             }
+            return Task.CompletedTask;
         }
 
-        public IQueryable<T> Get<T>() where T: Entity
+        public Task<IEnumerable<T>> Get<T>(Expression<Func<T, bool>> filter = null) where T: Entity
         {
+            System.Linq.Expressions.Expression<Func<T, bool>> expr = t => (t.Id != null);
+            Enumerable.Empty<T>().AsQueryable().Where(t => (t.Id != null));
             var type = typeof(T);
             if (data.ContainsKey(type))
             {
-                return data[typeof(T)].Select(entity => CloneObject<T>(entity.Value)).AsQueryable();
+                var result = data[typeof(T)].Select(entity => CloneObject<T>(entity.Value));
+                var filtered = filter == null ? result : result.Where(filter.Compile());
+                return Task.FromResult(filtered);
             }
             else
             {
-                return Enumerable.Empty<T>().AsQueryable();
+                return Task.FromResult(Enumerable.Empty<T>());
             }
         }
 

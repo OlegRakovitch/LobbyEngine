@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using RattusEngine.Controllers.Statuses;
 using RattusEngine.Exceptions;
 using RattusEngine.Models;
@@ -9,11 +10,13 @@ namespace RattusEngine.Controllers
 {
     public class RoomController
     {
-        private IContext context;
+        readonly IContext context;
+        readonly IGameStarter starter;
 
-        public RoomController(IContext context)
+        public RoomController(IContext context, IGameStarter starter)
         {
             this.context = context;
+            this.starter = starter;
         }
 
         User GetUser()
@@ -31,33 +34,40 @@ namespace RattusEngine.Controllers
             return room.Players.Count == 4;
         }
 
-        public RoomCreateStatus CreateRoom(string roomName)
+        public async Task<RoomCreateStatus> CreateRoom(string roomName, string gameType)
         {
             var user = GetUser();
             var storage = context.Storage;
-            if (storage.Get<Room>().Any(r => r.Name == roomName))
+            if ((await storage.Get<Room>(r => r.Name == roomName)).Any())
             {
                 return RoomCreateStatus.DuplicateName;
             }
-            else if (storage.Get<Room>().Any(r => r.Players.Contains(user)))
-            {
-                return RoomCreateStatus.AlreadyInRoom;
-            }
             else
             {
-                var room = new Room() { Name = roomName };
-                room.Players.Add(user);
-                room.Owner = user;
-                storage.Save(room);
-                return RoomCreateStatus.OK;
+                if ((await storage.Get<Room>(r => r.Players.Contains(user))).Any())
+                {
+                    return RoomCreateStatus.AlreadyInRoom;
+                }
+                else
+                {
+                    var room = new Room()
+                    {
+                        Name = roomName,
+                        Owner = user,
+                        GameType = gameType
+                    };
+                    room.Players.Add(user);
+                    await storage.Save(room);
+                    return RoomCreateStatus.OK;
+                }
             }
         }
 
-        public RoomJoinStatus JoinRoom(string roomName)
+        public async Task<RoomJoinStatus> JoinRoom(string roomName)
         {
             var user = GetUser();
             var storage = context.Storage;
-            var room = storage.Get<Room>().SingleOrDefault(r => r.Name == roomName);
+            var room = (await storage.Get<Room>(r => r.Name == roomName)).SingleOrDefault();
             if (room == null)
             {
                 return RoomJoinStatus.RoomNotFound;
@@ -66,23 +76,23 @@ namespace RattusEngine.Controllers
             {
                 return RoomJoinStatus.RoomIsFull;
             }
-            else if (storage.Get<Room>().Any(r => r.Players.Contains(user)))
+            else if ((await storage.Get<Room>(r => r.Players.Contains(user))).Any())
             {
                 return RoomJoinStatus.AlreadyInRoom;
             }
             else
             {
                 room.Players.Add(user);
-                storage.Save(room);
+                await storage.Save(room);
                 return RoomJoinStatus.OK;
             }
         }
 
-        public RoomLeaveStatus LeaveRoom()
+        public async Task<RoomLeaveStatus> LeaveRoom()
         {
             var user = GetUser();
             var storage = context.Storage;
-            var room = storage.Get<Room>().SingleOrDefault(r => r.Players.Contains(user));
+            var room = (await storage.Get<Room>(r => r.Players.Contains(user))).SingleOrDefault();
             if (room == null)
             {
                 return RoomLeaveStatus.NotInRoom;
@@ -96,7 +106,7 @@ namespace RattusEngine.Controllers
                 if (room.Owner.Equals(user))
                 {
                     room.Players.Clear();
-                    storage.Delete(room);
+                    await storage.Delete(room);
                 }
                 else
                 {
@@ -106,11 +116,11 @@ namespace RattusEngine.Controllers
             }
         }
 
-        public GameStartStatus StartGame()
+        public async Task<GameStartStatus> StartGame()
         {
             var user = GetUser();
             var storage = context.Storage;
-            var room = storage.Get<Room>().SingleOrDefault(r => r.Players.Contains(user));
+            var room = (await storage.Get<Room>(r => r.Players.Contains(user))).SingleOrDefault();
             if (room == null)
             {
                 return GameStartStatus.NotInRoom;
@@ -129,36 +139,36 @@ namespace RattusEngine.Controllers
             }
             else
             {
-                var game = new Game();
-                game.Players = room.Players;
-                storage.Save(game);
-                room.GameId = game.Id;
-                storage.Save(room);
+                var gameId = await starter.StartGame(room.GameType, room.Players.Select(player => player.Username));
+                room.GameId = gameId;
+                await storage.Save(room);
                 return GameStartStatus.OK;
             }
         }
 
-        public RoomView[] GetRooms()
+        public async Task<RoomView[]> GetRooms()
         {
             var user = GetUser();
-            var joinedRoom = context.Storage.Get<Room>().SingleOrDefault(r => r.Players.Contains(user));
+            var joinedRoom = (await context.Storage.Get<Room>(r => r.Players.Contains(user))).SingleOrDefault();
             if (joinedRoom != null)
             {
                 return new RoomView[] { new RoomView {
                     Name = joinedRoom.Name,
                     Status = string.IsNullOrEmpty(joinedRoom.GameId) ? RoomViewStatus.InRoom : RoomViewStatus.InGame,
                     Players = joinedRoom.Players,
-                    Owner = joinedRoom.Owner
+                    Owner = joinedRoom.Owner,
+                    GameType = joinedRoom.GameType
                 }};
             }
             else
             {
-                var joinableRooms = context.Storage.Get<Room>().Where(r => string.IsNullOrEmpty(r.GameId));
+                var joinableRooms = await context.Storage.Get<Room>(r => string.IsNullOrEmpty(r.GameId));
                 return joinableRooms.Select(r => new RoomView {
                     Name = r.Name,
                     Status = IsFullRoom(r) ? RoomViewStatus.Full : RoomViewStatus.Joinable,
                     Players = r.Players,
-                    Owner = r.Owner
+                    Owner = r.Owner,
+                    GameType = r.GameType
                 }).ToArray();
             }
         }

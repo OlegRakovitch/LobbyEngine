@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using RattusEngine.Controllers.Statuses;
 using RattusEngine.Models;
 
@@ -12,9 +13,9 @@ namespace RattusEngine.Controllers
             this.context = context;
         }
 
-        public UserRegisterStatus Register(string username)
+        public async Task<UserRegisterStatus> Register(string username)
         {
-            context.Storage.Save(new User() { Username = username });
+            await context.Storage.Save(new User() { Username = username });
             return UserRegisterStatus.OK;
         }
     }
