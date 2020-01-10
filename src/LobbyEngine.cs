@@ -2,12 +2,12 @@ using RattusEngine.Controllers;
 
 namespace RattusEngine
 {
-    public class LobbyController : ILobbyController
+    public class LobbyEngine : ILobbyEngine
     {
         public IContext Context { get; private set; }
         public RoomController RoomController { get; private set; }
         public UserController UserController { get; private set; }
-        public LobbyController(IContext context, IGameStarter starter)
+        public LobbyEngine(IContext context, IGameStarter starter)
         {
             Context = context;
             RoomController = new RoomController(context, starter);

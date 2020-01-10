@@ -6,7 +6,7 @@ namespace RattusEngine.Fixtures
 {
     public class Common
     {
-        public static LobbyController App;
+        public static LobbyEngine Engine;
         public static MemoryStorage Storage;
         public static ModifiableContext Context;
         public bool InitializeApplication()
@@ -18,7 +18,7 @@ namespace RattusEngine.Fixtures
                 {
                     Storage = Storage
                 };
-                App = new LobbyController(Context, new GameStarter());
+                Engine = new LobbyEngine(Context, new GameStarter());
                 return true;
             }
             catch (Exception ex)
@@ -32,7 +32,7 @@ namespace RattusEngine.Fixtures
         {
             try
             {
-                App.Context.Storage.DeleteAll<Room>();
+                Engine.Context.Storage.DeleteAll<Room>();
                 return true;
             }
             catch (Exception ex)

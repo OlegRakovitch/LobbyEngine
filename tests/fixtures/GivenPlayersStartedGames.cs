@@ -11,8 +11,8 @@ namespace RattusEngine.Fixtures
 
         public void Execute()
         {
-            Common.Context.CurrentUser = Common.App.Context.Storage.Get<User>(u => u.Username == Username).GetAwaiter().GetResult().Single();
-            var status = Common.App.RoomController.StartGame().GetAwaiter().GetResult();
+            Common.Context.CurrentUser = Common.Engine.Context.Storage.Get<User>(u => u.Username == Username).GetAwaiter().GetResult().Single();
+            var status = Common.Engine.RoomController.StartGame().GetAwaiter().GetResult();
             if (status != GameStartStatus.OK)
             {
                 throw new Exception($"Game wasn't started successfully by {Username}: {status}");
