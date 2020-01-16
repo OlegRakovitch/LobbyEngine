@@ -165,7 +165,8 @@ namespace RattusEngine.Controllers
                     Status = string.IsNullOrEmpty(joinedRoom.GameId) ? RoomViewStatus.InRoom : RoomViewStatus.InGame,
                     Players = joinedRoom.Players,
                     Owner = joinedRoom.Owner,
-                    GameType = joinedRoom.GameType
+                    GameType = joinedRoom.GameType,
+                    GameId = joinedRoom.GameId
                 }};
             }
             else
@@ -176,7 +177,8 @@ namespace RattusEngine.Controllers
                     Status = IsFullRoom(r) ? RoomViewStatus.Full : RoomViewStatus.Joinable,
                     Players = r.Players,
                     Owner = r.Owner,
-                    GameType = r.GameType
+                    GameType = r.GameType,
+                    GameId = r.GameId
                 }).ToArray();
             }
         }

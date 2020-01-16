@@ -8,6 +8,7 @@ namespace RattusEngine.Views
     {
         public string Name;
         public string GameType;
+        public string GameId;
         public RoomViewStatus Status;
         public IEnumerable<User> Players;
         public User Owner;
