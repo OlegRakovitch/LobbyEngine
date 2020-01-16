@@ -7,7 +7,7 @@ namespace RattusEngine.Tests
     {
         public Task<string> StartGame(string gameType, IEnumerable<string> players)
         {
-            return Task.FromResult($"{gameType}:[{string.Join(',', players)}]");
+            return Task.FromResult($"GameId");
         }
     }
 }

@@ -36,6 +36,10 @@ namespace RattusEngine.Controllers
 
         public async Task<RoomCreateStatus> CreateRoom(string roomName, string gameType)
         {
+            if (string.IsNullOrEmpty(roomName) || string.IsNullOrEmpty(gameType))
+            {
+                throw new ArgumentException();
+            }
             var user = GetUser();
             var storage = context.Storage;
             if ((await storage.Get<Room>(r => r.Name == roomName)).Any())
@@ -65,6 +69,10 @@ namespace RattusEngine.Controllers
 
         public async Task<RoomJoinStatus> JoinRoom(string roomName)
         {
+            if (string.IsNullOrEmpty(roomName))
+            {
+                throw new ArgumentException();
+            }
             var user = GetUser();
             var storage = context.Storage;
             var room = (await storage.Get<Room>(r => r.Name == roomName)).SingleOrDefault();

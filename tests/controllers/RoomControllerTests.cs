@@ -5,6 +5,7 @@ using RattusEngine.Controllers.Statuses;
 using RattusEngine.Controllers;
 using RattusEngine.Exceptions;
 using RattusEngine.Models;
+using System;
 
 namespace RattusEngine.Tests
 {
@@ -152,30 +153,6 @@ namespace RattusEngine.Tests
         }
 
         [Fact]
-        public async void GameTypeAndPlayersArePassedToGameStarter()
-        {
-            var owner = new User() { Username = "owner" };
-            var user = new User() { Username = "user" };
-            var storage = new MemoryStorage();
-            var context = new ModifiableContext()
-            {
-                Storage = storage,
-                CurrentUser = owner
-            };
-            var roomController = GetRoomController(context);
-            await roomController.CreateRoom("room", "some-game");
-            
-            context.CurrentUser = user;
-            await roomController.JoinRoom("room");
-
-            context.CurrentUser = owner;
-            await roomController.StartGame();
-
-            var room = (await context.Storage.Get<Room>()).Single();
-            Assert.Equal("some-game:[owner,user]", room.GameId);
-        }
-
-        [Fact]
         public async void GameIdIsSavedInRoom()
         {
             var owner = new User() { Username = "owner" };
@@ -187,7 +164,7 @@ namespace RattusEngine.Tests
                 CurrentUser = owner
             };
             var roomController = GetRoomController(context);
-            await roomController.CreateRoom("room", "some-game");
+            await roomController.CreateRoom("room", "game");
             
             context.CurrentUser = user;
             await roomController.JoinRoom("room");
@@ -196,7 +173,7 @@ namespace RattusEngine.Tests
             await roomController.StartGame();
 
             var room = (await context.Storage.Get<Room>()).Single();
-            Assert.NotNull(room.GameId);
+            Assert.Equal("GameId", room.GameId);
         }
 
         [Fact]
@@ -335,30 +312,6 @@ namespace RattusEngine.Tests
 
             context.CurrentUser = owner;
             Assert.Equal(GameStartStatus.OK, await roomController.StartGame());
-        }
-
-        [Fact]
-        public async void GameIdIsSavedInRoomUponGameStart()
-        {
-            var owner = new User();
-            var user = new User();
-            var storage = new MemoryStorage();
-            var context = new ModifiableContext()
-            {
-                Storage = storage,
-                CurrentUser = owner
-            };
-            var roomController = GetRoomController(context);
-            await roomController.CreateRoom("room", "game");
-
-            context.CurrentUser = user;
-            await roomController.JoinRoom("room");
-
-            context.CurrentUser = owner;
-            var status = roomController.StartGame();
-
-            var room = (await storage.Get<Room>()).Single();
-            Assert.NotNull(room.GameId);
         }
 
         [Fact]
@@ -583,6 +536,33 @@ namespace RattusEngine.Tests
 
             context.CurrentUser = user;
             Assert.Equal("game", (await roomController.GetRooms()).Single().GameType);
+        }
+
+        [Fact]
+        public async void UserCanNotCreateRoomWithoutName()
+        {
+            var context = GetContextWithProvidedUser();
+            var roomController = GetRoomController(context);
+            await Assert.ThrowsAsync<ArgumentException>(() => roomController.CreateRoom("", "game"));
+            await Assert.ThrowsAsync<ArgumentException>(() => roomController.CreateRoom(null, "game"));
+        }
+
+        [Fact]
+        public async void UserCanNotCreateRoomWithoutGameType()
+        {
+            var context = GetContextWithProvidedUser();
+            var roomController = GetRoomController(context);
+            await Assert.ThrowsAsync<ArgumentException>(() => roomController.CreateRoom("room", ""));
+            await Assert.ThrowsAsync<ArgumentException>(() => roomController.CreateRoom("room", null));
+        }
+
+        [Fact]
+        public async void UserCanNotJoinRoomWithoutName()
+        {
+            var context = GetContextWithProvidedUser();
+            var roomController = GetRoomController(context);
+            await Assert.ThrowsAsync<ArgumentException>(() => roomController.JoinRoom(""));
+            await Assert.ThrowsAsync<ArgumentException>(() => roomController.JoinRoom(null));
         }
     }
 }
