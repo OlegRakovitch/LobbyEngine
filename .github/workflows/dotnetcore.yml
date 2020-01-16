@@ -14,6 +14,6 @@ jobs:
       with:
         dotnet-version: 2.2.108
     - name: Build with dotnet
-      run: dotnet build src/RattusEngine.csproj
+      run: dotnet build src/LobbyEngine.csproj
     - name: Run tests
-      run: dotnet test tests/RattusEngine.Tests.csproj
+      run: dotnet test tests/LobbyEngine.Tests.csproj

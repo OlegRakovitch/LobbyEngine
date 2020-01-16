@@ -1,6 +1,6 @@
-using RattusEngine.Controllers;
+using LobbyEngine.Controllers;
 
-namespace RattusEngine
+namespace LobbyEngine
 {
     public interface ILobbyEngine
     {

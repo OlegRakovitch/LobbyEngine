@@ -1,8 +1,8 @@
 using System.Linq;
-using RattusEngine.Models;
-using RattusEngine.Views;
+using LobbyEngine.Models;
+using LobbyEngine.Views;
 
-namespace RattusEngine.Fixtures
+namespace LobbyEngine.Fixtures
 {
     public class GetRooms : QueryFixture<RoomView>
     {

@@ -1,12 +1,12 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using RattusEngine.Controllers.Statuses;
-using RattusEngine.Exceptions;
-using RattusEngine.Models;
-using RattusEngine.Views;
+using LobbyEngine.Controllers.Statuses;
+using LobbyEngine.Exceptions;
+using LobbyEngine.Models;
+using LobbyEngine.Views;
 
-namespace RattusEngine.Controllers
+namespace LobbyEngine.Controllers
 {
     public class RoomController
     {

@@ -1,4 +1,4 @@
-namespace RattusEngine.Controllers.Statuses
+namespace LobbyEngine.Controllers.Statuses
 {
     public enum UserRegisterStatus
     {

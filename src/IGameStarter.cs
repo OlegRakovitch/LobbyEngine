@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace RattusEngine
+namespace LobbyEngine
 {
     public interface IGameStarter
     {

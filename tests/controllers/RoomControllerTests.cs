@@ -1,13 +1,13 @@
 using Xunit;
-using RattusEngine;
+using LobbyEngine;
 using System.Linq;
-using RattusEngine.Controllers.Statuses;
-using RattusEngine.Controllers;
-using RattusEngine.Exceptions;
-using RattusEngine.Models;
+using LobbyEngine.Controllers.Statuses;
+using LobbyEngine.Controllers;
+using LobbyEngine.Exceptions;
+using LobbyEngine.Models;
 using System;
 
-namespace RattusEngine.Tests
+namespace LobbyEngine.Tests
 {
     public class RoomControllerTests
     {

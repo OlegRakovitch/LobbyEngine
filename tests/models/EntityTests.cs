@@ -1,9 +1,9 @@
 using System;
 using Xunit;
-using RattusEngine;
-using RattusEngine.Models;
+using LobbyEngine;
+using LobbyEngine.Models;
 
-namespace RattusEngine.Tests
+namespace LobbyEngine.Tests
 {
     public class EntityTests
     {

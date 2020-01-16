@@ -1,29 +1,29 @@
 ---
 Test
 ---
-!|RattusEngine.Fixtures.GivenPlayers|
-|Username                           |
-|jim                                |
-|dwight                             |
-|mike                               |
-|pam                                |
-|oscar                              |
+!|LobbyEngine.Fixtures.GivenPlayers|
+|Username                          |
+|jim                               |
+|dwight                            |
+|mike                              |
+|pam                               |
+|oscar                             |
 
-!|RattusEngine.Fixtures.GivenPlayersCreatedRooms|
-|Username       |Room name      |Game type      |
-|dwight         |Room1          |Game1          |
-|jim            |Room2          |Game2          |
-|mike           |Room3          |Game3          |
-|oscar          |Room4          |Game4          |
+!|LobbyEngine.Fixtures.GivenPlayersCreatedRooms|
+|Username       |Room name      |Game type     |
+|dwight         |Room1          |Game1         |
+|jim            |Room2          |Game2         |
+|mike           |Room3          |Game3         |
+|oscar          |Room4          |Game4         |
 
-!|RattusEngine.Fixtures.GivenPlayersJoinedRooms|
-|Username              |Room name              |
-|pam                   |Room2                  |
+!|LobbyEngine.Fixtures.GivenPlayersJoinedRooms|
+|Username              |Room name             |
+|pam                   |Room2                 |
 
-!|RattusEngine.Fixtures.GivenPlayersStartedGames|
-|Username                                       |
-|jim                                            |
+!|LobbyEngine.Fixtures.GivenPlayersStartedGames|
+|Username                                      |
+|jim                                           |
 
-!|Query:RattusEngine.Fixtures.GetRooms|jim            |
-|Name                                 |GameType|Status|
-|Room2                                |Game2   |InGame|
+!|Query:LobbyEngine.Fixtures.GetRooms|jim            |
+|Name                                |GameType|Status|
+|Room2                               |Game2   |InGame|

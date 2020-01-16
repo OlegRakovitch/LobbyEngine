@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
-using RattusEngine.Controllers.Statuses;
-using RattusEngine.Models;
+using LobbyEngine.Controllers.Statuses;
+using LobbyEngine.Models;
 
-namespace RattusEngine.Fixtures
+namespace LobbyEngine.Fixtures
 {
     public class GivenPlayersJoinedRooms
     {

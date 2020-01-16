@@ -1,9 +1,9 @@
 using System.Linq;
-using RattusEngine.Controllers;
-using RattusEngine.Models;
+using LobbyEngine.Controllers;
+using LobbyEngine.Models;
 using Xunit;
 
-namespace RattusEngine.Tests
+namespace LobbyEngine.Tests
 {
     public class UserControllerTests
     {

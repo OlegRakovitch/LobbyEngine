@@ -1,13 +1,13 @@
-using RattusEngine.Controllers;
+using LobbyEngine.Controllers;
 
-namespace RattusEngine
+namespace LobbyEngine
 {
-    public class LobbyEngine : ILobbyEngine
+    public class Lobby : ILobbyEngine
     {
         public IContext Context { get; private set; }
         public RoomController RoomController { get; private set; }
         public UserController UserController { get; private set; }
-        public LobbyEngine(IContext context, IGameStarter starter)
+        public Lobby(IContext context, IGameStarter starter)
         {
             Context = context;
             RoomController = new RoomController(context, starter);

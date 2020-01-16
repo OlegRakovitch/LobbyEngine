@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace RattusEngine.Fixtures
+namespace LobbyEngine.Fixtures
 {
     public abstract class QueryFixture<T>
     {

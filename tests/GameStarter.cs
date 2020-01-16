@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace RattusEngine.Tests
+namespace LobbyEngine.Tests
 {
     public class GameStarter : IGameStarter
     {

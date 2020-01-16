@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using RattusEngine.Controllers.Statuses;
-using RattusEngine.Models;
+using LobbyEngine.Controllers.Statuses;
+using LobbyEngine.Models;
 
-namespace RattusEngine.Views
+namespace LobbyEngine.Views
 {
     public class RoomView
     {

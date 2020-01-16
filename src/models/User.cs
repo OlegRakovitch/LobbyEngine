@@ -1,4 +1,4 @@
-namespace RattusEngine.Models
+namespace LobbyEngine.Models
 {
     public class User : Entity
     {

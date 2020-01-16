@@ -1,35 +1,35 @@
 ---
 Test
 ---
-!|RattusEngine.Fixtures.GivenPlayers|
-|Username                           |
-|jim                                |
-|dwight                             |
-|mike                               |
-|pam                                |
-|oscar                              |
-|toby                               |
-|angela                             |
+!|LobbyEngine.Fixtures.GivenPlayers|
+|Username                          |
+|jim                               |
+|dwight                            |
+|mike                              |
+|pam                               |
+|oscar                             |
+|toby                              |
+|angela                            |
 
-!|RattusEngine.Fixtures.GivenPlayersCreatedRooms|
-|Username       |Room name      |Game type      |
-|dwight         |Room1          |Game1          |
-|pam            |Room2          |Game2          |
-|mike           |Room3          |Game3          |
-|oscar          |Room4          |Game4          |
+!|LobbyEngine.Fixtures.GivenPlayersCreatedRooms|
+|Username       |Room name      |Game type     |
+|dwight         |Room1          |Game1         |
+|pam            |Room2          |Game2         |
+|mike           |Room3          |Game3         |
+|oscar          |Room4          |Game4         |
 
-!|RattusEngine.Fixtures.GivenPlayersJoinedRooms|
-|Username              |Room name              |
-|toby                  |Room3                  |
-|angela                |Room4                  |
+!|LobbyEngine.Fixtures.GivenPlayersJoinedRooms|
+|Username              |Room name             |
+|toby                  |Room3                 |
+|angela                |Room4                 |
 
 
-!|RattusEngine.Fixtures.GivenPlayersStartedGames|
-|Username                                       |
-|mike                                           |
-|oscar                                          |
+!|LobbyEngine.Fixtures.GivenPlayersStartedGames|
+|Username                                      |
+|mike                                          |
+|oscar                                         |
 
-!|Query:RattusEngine.Fixtures.GetRooms|jim              |
-|Name                                 |GameType|Status  |
-|Room1                                |Game1   |Joinable|
-|Room2                                |Game2   |Joinable|
+!|Query:LobbyEngine.Fixtures.GetRooms|jim              |
+|Name                                |GameType|Status  |
+|Room1                               |Game1   |Joinable|
+|Room2                               |Game2   |Joinable|

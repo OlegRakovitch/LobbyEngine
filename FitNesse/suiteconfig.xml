@@ -1,7 +1,7 @@
 <suiteConfig>
     <ApplicationUnderTest>
-        <AddAssembly>..\tests\bin\Debug\netcoreapp2.1\RattusEngine.Tests.dll</AddAssembly>
-        <AddNamespace>RattusEngine.Fixtures</AddNamespace>
+        <AddAssembly>..\tests\bin\Debug\netcoreapp2.1\LobbyEngine.Tests.dll</AddAssembly>
+        <AddNamespace>LobbyEngine.Fixtures</AddNamespace>
     </ApplicationUnderTest>
     <Settings>
        <Runner>fitSharp.Slim.Service.Runner</Runner>

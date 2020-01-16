@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RattusEngine.Models
+namespace LobbyEngine.Models
 {
     public class Room : Entity
     {

@@ -1,7 +1,7 @@
 using System;
-using RattusEngine.Controllers.Statuses;
+using LobbyEngine.Controllers.Statuses;
 
-namespace RattusEngine.Fixtures
+namespace LobbyEngine.Fixtures
 {
     public class GivenPlayers
     {

@@ -1,6 +1,6 @@
-using RattusEngine.Models;
+using LobbyEngine.Models;
 
-namespace RattusEngine
+namespace LobbyEngine
 {
     public class ModifiableContext : IContext
     {

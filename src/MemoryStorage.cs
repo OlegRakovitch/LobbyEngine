@@ -2,11 +2,11 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
-using RattusEngine.Models;
+using LobbyEngine.Models;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
 
-namespace RattusEngine
+namespace LobbyEngine
 {
     public class MemoryStorage : IStorage
     {

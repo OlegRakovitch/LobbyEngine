@@ -1,12 +1,12 @@
 ---
 Test
 ---
-!|RattusEngine.Fixtures.GivenPlayers|
-|Username                           |
-|jim                                |
+!|LobbyEngine.Fixtures.GivenPlayers|
+|Username                          |
+|jim                               |
 
 !|script|Common|
 |given no rooms|
 
-!|Query:RattusEngine.Fixtures.GetRooms|jim            |
-|Name                                 |GameType|Status|
+!|Query:LobbyEngine.Fixtures.GetRooms|jim            |
+|Name                                |GameType|Status|

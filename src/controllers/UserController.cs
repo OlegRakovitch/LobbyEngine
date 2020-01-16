@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
-using RattusEngine.Controllers.Statuses;
-using RattusEngine.Models;
+using LobbyEngine.Controllers.Statuses;
+using LobbyEngine.Models;
 
-namespace RattusEngine.Controllers
+namespace LobbyEngine.Controllers
 {
     public class UserController
     {

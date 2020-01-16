@@ -3,11 +3,11 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <PackageId>RattusEngine</PackageId>
-    <Version>1.0.4</Version>
+    <PackageId>LobbyEngine</PackageId>
+    <Version>1.0.5</Version>
     <Authors>OlegRakovitch</Authors>
-    <PackageDescription>This package is a Rattus Engine lib for further usage in API</PackageDescription>
-    <RepositoryUrl>https://github.com/OlegRakovitch/RattusEngine</RepositoryUrl>
+    <PackageDescription>This package is a Lobby Engine lib for further usage in API</PackageDescription>
+    <RepositoryUrl>https://github.com/OlegRakovitch/LobbyEngine</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>

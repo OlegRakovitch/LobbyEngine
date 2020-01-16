@@ -1,12 +1,12 @@
 using System;
-using RattusEngine.Models;
-using RattusEngine.Tests;
+using LobbyEngine.Models;
+using LobbyEngine.Tests;
 
-namespace RattusEngine.Fixtures
+namespace LobbyEngine.Fixtures
 {
     public class Common
     {
-        public static LobbyEngine Engine;
+        public static Lobby Engine;
         public static MemoryStorage Storage;
         public static ModifiableContext Context;
         public bool InitializeApplication()
@@ -18,7 +18,7 @@ namespace RattusEngine.Fixtures
                 {
                     Storage = Storage
                 };
-                Engine = new LobbyEngine(Context, new GameStarter());
+                Engine = new Lobby(Context, new GameStarter());
                 return true;
             }
             catch (Exception ex)
